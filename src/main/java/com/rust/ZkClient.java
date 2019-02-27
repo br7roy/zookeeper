@@ -18,8 +18,8 @@ import org.apache.zookeeper.ZooKeeper;
  public class ZkClient {
   public static void main(String[] args) throws Exception {
    String conn = "192.168.231.101:2181,192.168.231.102:2181,192.168.231.103:2181";
-   ZooKeeper zk = new ZooKeeper(conn, 5000, null);
 
+   ZooKeeper zk = new ZooKeeper(conn, 5000, null);
    while (!zk.getState().isConnected()) {
 
    }

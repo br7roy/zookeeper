@@ -46,6 +46,7 @@
 		 this.watcher = watcher;
 
 	 }
+
 	 @Test
 	 public void connZK() throws Exception {
 		 long sessionId = zk.getSessionId();
@@ -61,7 +62,7 @@
 	  * @throws Exception
 	  */
 	 @Test
-	 public void updateZNode()throws Exception{
+	 public void updateZNode() throws Exception {
 
 		 zk.setData("/root", "how are your?".getBytes(), 0);
 
@@ -70,14 +71,13 @@
 	 }
 
 
-
 	 /**
 	  * 连接到zk
 	  *
 	  * @throws Exception
 	  */
 	 @Test
-	 public void getZNode()throws Exception{
+	 public void getZNode() throws Exception {
 
 		 //	状态对象，在getData时候，接收节点的状态信息的
 		 Stat stat = new Stat();
@@ -94,17 +94,13 @@
 	  * @throws Exception
 	  */
 	 @Test
-	 public void getEphemeralZNode()throws Exception{
+	 public void getEphemeralZNode() throws Exception {
 
 		 zk.create("/root/myenode", "helloworld".getBytes(), Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL);
 
 		 System.out.println("over");
 
 	 }
-
-
-
-
 
 
 	 /**
@@ -141,16 +137,17 @@
 	  * @throws Exception
 	  */
 	 @Test
-	 public void deleteZNode()throws Exception {
+	 public void deleteZNode() throws Exception {
 		 zk.delete("/root/myenode0000000001", 0);
 	 }
 
 	 /**
 	  * 测试观察者模式，回调
+	  *
 	  * @throws Exception
 	  */
 	 @Test
-	 public void testWatcher()throws Exception{
+	 public void testWatcher() throws Exception {
 
 		 byte[] bs = zk.getData("/root", watcher, new Stat());
 		 System.out.println(new String(bs));
@@ -160,16 +157,16 @@
 		 }
 
 
-
 	 }
 
 
 	 /**
 	  * 重新注册观察者
+	  *
 	  * @throws Exception
 	  */
 	 @Test
-	 public void registerWatcher()throws Exception {
+	 public void registerWatcher() throws Exception {
 
 		 Phaser p2 = new Phaser(1);
 
@@ -200,6 +197,28 @@
 
 		 }
 
+
+	 }
+
+	 @Test
+	 public void listAllZnode() throws Exception {
+		 printZnode("/");
+	 }
+
+	 private void printZnode(String path) throws Exception {
+		 System.out.println(path);
+		 List<String> children = zk.getChildren(path, false);
+		 for (String k : children) {
+			 try {
+
+				 if (path.equals("/")) {
+					 path = "";
+				 }
+				 printZnode(path + "/" + k);
+			 } catch (Exception e) {
+				 e.printStackTrace();
+			 }
+		 }
 
 	 }
 
